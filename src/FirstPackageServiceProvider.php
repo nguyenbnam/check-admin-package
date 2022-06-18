@@ -1,0 +1,29 @@
+<?php 
+
+namespace NBN\FirstPackage;
+
+use Illuminate\Support\ServiceProvider;
+
+class FirstPackageServiceProvider extends ServiceProvider{
+    public function register()
+    {
+        $this->mergeConfigFrom(__DIR__ . '/config/permission.php', 'permission');
+        // nếu chạy trong console thì n vào đây, không chạy thì false
+        if ($this->app->runningInConsole()) {
+            $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
+            $this->publicFile();
+        }
+    }
+
+    public function boot()
+    {
+        
+    }
+
+    public function publicFile()
+    {
+        $this->publishes([
+            __DIR__ . '/database/migrations' => base_path('database/migrations')
+        ], 'permission');
+    }
+}
